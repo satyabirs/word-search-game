@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Grid {
 
@@ -83,6 +84,20 @@ public class Grid {
                             break;
                     }
                     break;
+                }
+            }
+        }
+        fillRandomGrid();
+    }
+
+    private void fillRandomGrid(){
+        String allCapLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < gridSize ; i++) {
+            for (int j = 0; j < gridSize ; j++) {
+                if(contents[i][j] == '_')
+                {
+                    int random = ThreadLocalRandom.current().nextInt(0, allCapLetters.length());
+                    contents[i][j] = allCapLetters.charAt(random);
                 }
             }
         }
