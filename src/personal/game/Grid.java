@@ -14,7 +14,10 @@ public class Grid {
     private enum Direction {
         HORIZONTAL,
         VERTICAL,
-        DIAGONAL
+        DIAGONAL,
+        HORIZONTAL_INVERSE,
+        VERTICAL_INVERSE,
+        DIAGONAL_INVERSE
     }
 
     private class Coordinate {
@@ -46,8 +49,8 @@ public class Grid {
                 int x = coordinate.x;
                 int y = coordinate.y;
                 Direction selectedDirection = getDirectionForFit(word, coordinate);
-                if (selectedDirection !=null) {
-                    switch (selectedDirection){
+                if (selectedDirection != null) {
+                    switch (selectedDirection) {
                         case HORIZONTAL:
                             for (char c : word.toCharArray()) {
                                 contents[x][y++] = c;
@@ -61,6 +64,21 @@ public class Grid {
                         case DIAGONAL:
                             for (char c : word.toCharArray()) {
                                 contents[x++][y++] = c;
+                            }
+                            break;
+                        case HORIZONTAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x][y--] = c;
+                            }
+                            break;
+                        case VERTICAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x--][y] = c;
+                            }
+                            break;
+                        case DIAGONAL_INVERSE:
+                            for (char c : word.toCharArray()) {
+                                contents[x--][y--] = c;
                             }
                             break;
                     }
@@ -110,6 +128,24 @@ public class Grid {
                 if (coordinate.x + wordLength > gridSize || coordinate.y + wordLength > gridSize) return false;
                 for (int i = 0; i < wordLength; i++) {
                     if (contents[coordinate.x + i][coordinate.y + i] != '_') return false;
+                }
+                break;
+            case HORIZONTAL_INVERSE:
+                if (coordinate.y < wordLength) return false;
+                for (int i = 0; i < wordLength; i++) {
+                    if (contents[coordinate.x][coordinate.y - i] != '_') return false;
+                }
+                break;
+            case VERTICAL_INVERSE:
+                if (coordinate.x < wordLength) return false;
+                for (int i = 0; i < wordLength; i++) {
+                    if (contents[coordinate.x - i][coordinate.y] != '_') return false;
+                }
+                break;
+            case DIAGONAL_INVERSE:
+                if (coordinate.x < wordLength || coordinate.y < wordLength) return false;
+                for (int i = 0; i < wordLength; i++) {
+                    if (contents[coordinate.x - i][coordinate.y - i] != '_') return false;
                 }
                 break;
         }
